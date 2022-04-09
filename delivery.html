@@ -1,0 +1,73 @@
+
+<head>
+  <script type = "text/javascript">
+    function getContractFee(size, collateral, iskm3) {
+      var collateral_charge = 0.02 * collateral;
+      var size_charge = size * iskm3;
+      var fee = collateral_charge + size_charge;
+      // document.getElementById("raw_output").innerHTML = fee;
+      document.getElementById("pretty_output").innerHTML = fee.toLocaleString("en-US") + " ISK";
+      document.getElementById("copy_message").innerHTML = "";
+      return fee;
+    }
+    function copyToClipboard() {
+      fee = getContractFee(document.getElementById('size').value,
+                          document.getElementById('collateral').value,
+                          document.getElementById('iskm3').value
+                          )
+      navigator.clipboard.writeText(fee);
+      document.getElementById("copy_message").innerHTML = "Copied to clipboard: "+fee;
+    }
+  </script>
+</head>
+<style>
+  td{
+    vertical-align: top;
+  }
+</style>
+<label for="table_input">Fill out the form below to calculate your fee.</label>
+<table id="table_input"><br><br>
+<tr>
+<td style="text-align: right;"><label for="iskm3">Route</label></td>
+<td style="text-align: left;">
+  <select name="iskm3" id="iskm3"
+  onchange="getContractFee(document.getElementById('size').value,
+                          document.getElementById('collateral').value,
+                          document.getElementById('iskm3').value
+                          )">
+    <option value=180> MJ-5F9 Beanstar <<>> K-3PQW Tatara (180 isk/m&#179;) </option>
+    <option value=280> R1O-GN Zenstar <<>> K-3PQW Tatara (280 isk/m&#179;) </option>
+    <option value=500> Between blue structures in PF, TKE, or Geminate (500 isk/m&#179;, Minimum 20mil) </option>
+  </select>
+</td>
+</tr>
+
+<tr>
+<td style="text-align: right;"><label for="size">Contract Size (Max 60,000 m&#179;)</label></td>
+<td style="text-align: left;"><input type="number" id="size" name="size"
+onkeyup="getContractFee(document.getElementById('size').value,
+                        document.getElementById('collateral').value,
+                        document.getElementById('iskm3').value
+                        )"> m&#179;<br></td>
+</tr>
+
+<tr>
+  <td style="text-align: right;"><label for="collateral">Collateral (2% charge)</label></td>
+  <td style="text-align: left;"><input type="number" id="collateral" name="collateral"
+  onkeyup="getContractFee(document.getElementById('size').value,
+                          document.getElementById('collateral').value,
+                          document.getElementById('iskm3').value
+                          )"> ISK
+                          <br><br></td>
+</tr>
+</table>
+<table>
+  <tr>
+    <td style="text-align: right;"><label for="pretty_output">Reward:</label></td>
+    <td style="text-align: left;"><div id="pretty_output"></div></td>
+  </tr>
+  <tr>
+    <td style="text-align: right;"><button type="button" onclick="copyToClipboard()">Copy Amount</button></td>
+    <td style="text-align: left; color: maroon;"><div id="copy_message"></div></td>
+  </tr>
+</table>
